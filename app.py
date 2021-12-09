@@ -1,3 +1,4 @@
+# Import libraries
 from typing import final
 from keras import models
 from matplotlib import scale
@@ -9,35 +10,39 @@ import pandas_datareader as data
 import streamlit as st
 from datetime import date
 
+
 today = date.today()
 start = today - pd.DateOffset(years=10)
 end = today
 
 st.title('Stock Trend Prediction')
 
+# get stock symbol from user
 user_input = st.text_input("Enter The Stock Symbol", 'SBIN.NS')
 
 end = st.text_input("Enter The Date", end)
 
+# get data from yahoo finance
 df = data.DataReader(user_input, 'yahoo', start, end)
 
 st.subheader('Data from start to end')
 
+# show data
 st.write(df)
 
-st.subheader('Closing Prise vs Time Chart')
+st.subheader('Closing Price vs Time Chart')
 fig = plt.figure(figsize=(12,6))
 plt.plot(df.Close)
 st.pyplot(fig)
 
-st.subheader('Closing Prise vs Time Chart with 100MA')
+st.subheader('Closing Price vs Time Chart with 100MA')
 ma100 = df.Close.rolling(100).mean()
 fig = plt.figure(figsize=(12,6))
 plt.plot(ma100)
 plt.plot(df.Close)
 st.pyplot(fig)
 
-st.subheader('Closing Prise vs Time Chart with 100MA & 200MA')
+st.subheader('Closing Price vs Time Chart with 100MA & 200MA')
 ma100 = df.Close.rolling(100).mean() 
 ma200 = df.Close.rolling(200).mean()
 fig = plt.figure(figsize=(12,6))
@@ -46,9 +51,9 @@ plt.plot(ma200)
 plt.plot(df.Close)
 st.pyplot(fig)
 
-
+# divide the data into train and test 70 / 30
 data_training = pd.DataFrame(df['Close'][0:int(len(df)*0.70)])
-data_testing = pd.DataFrame(df['Close'][int(len(df)*0.50): int(len(df))])
+data_testing = pd.DataFrame(df['Close'][int(len(df)*0.70): int(len(df))])
 
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler(feature_range=(0,1))
@@ -64,7 +69,7 @@ for i in range(100, data_training_array.shape[0]):
 X_train, y_train = np.array(X_train), np.array(y_train)
 
 #ML Model
-
+# use to create the LSTM model for code reference model
 
 #Load my model
 from tensorflow import keras
