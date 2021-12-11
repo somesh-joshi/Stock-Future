@@ -1,4 +1,6 @@
 # Import libraries
+from logging import ERROR
+from re import A, M
 from typing import final
 from keras import models
 from matplotlib import scale
@@ -9,16 +11,19 @@ from pandas.io import feather_format
 import pandas_datareader as data
 import streamlit as st
 from datetime import date
+from tensorflow.python.ops.gen_math_ops import mod
+
+from tensorflow.python.platform.tf_logging import error
 
 
 today = date.today()
-start = today - pd.DateOffset(years=10)
+start = today - pd.DateOffset(years=20)
 end = today
 
 st.title('Stock Trend Prediction')
 
 # get stock symbol from user
-user_input = st.text_input("Enter The Stock Symbol", 'SBIN.NS')
+user_input = st.text_input("Enter The Stock Symbol", 'TATAMOTORS.NS')
 
 end = st.text_input("Enter The Date", end)
 
@@ -43,11 +48,25 @@ plt.plot(df.Close)
 st.pyplot(fig)
 
 st.subheader('Closing Price vs Time Chart with 100MA & 200MA')
-ma100 = df.Close.rolling(100).mean() 
 ma200 = df.Close.rolling(200).mean()
-fig = plt.figure(figsize=(12,6))
+fig = plt.figure(figsize=(20,10))
 plt.plot(ma100)
 plt.plot(ma200)
+plt.plot(df.Close)
+st.pyplot(fig)
+ma25 = df.Close.rolling(25).mean()
+
+st.subheader('Closing Price vs Time Chart with 100MA & 75MA & 50MA & 25MA & 10MA')
+ma75 = df.Close.rolling(75).mean()
+ma50 = df.Close.rolling(50).mean()
+ma25 = df.Close.rolling(25).mean()
+ma10 = df.Close.rolling(10).mean()
+fig = plt.figure(figsize=(12,6))
+plt.plot(ma100)
+plt.plot(ma75)
+plt.plot(ma50)
+plt.plot(ma25)
+plt.plot(ma10)
 plt.plot(df.Close)
 st.pyplot(fig)
 
@@ -78,8 +97,8 @@ models = keras.models.load_model('Keras_model.h5')
 
 #Testing Part
  
-past_100_days = data_testing.tail(100)
-final_df = past_100_days.append(data_testing, ignore_index=True)
+past_500_days = data_testing.tail(500)
+final_df = past_500_days.append(data_testing, ignore_index=True)
 input_data = scaler.fit_transform(final_df)
 
 x_test = []
@@ -95,22 +114,20 @@ y_predicted = y_predicted.reshape(y_predicted.shape[0],y_predicted.shape[1])
 scaler = scaler.scale_
 
 scaler_factor = 1/scaler[0]
-y_predicted = y_predicted * scaler_factor
+predicted = (y_predicted * scaler_factor).max()
 y_test = y_test * scaler_factor
 
-
 # get prediction
-st.subheader('Prediction: ' + str(y_predicted[y_predicted.shape[0]-1][y_predicted.shape[1]-1]))
-e1 = y_predicted[y_predicted.shape[0]-1][y_predicted.shape[1]-1]
+st.subheader('Prediction: ' + str(predicted))
 
 # get original price
 st.subheader('Original Price: ' + str(data_testing.tail(1).Close[0]))
 e2 = data_testing.tail(1).Close[0]
 
 # get error
-st.subheader('Error: ' + str(abs(e1-e2)))
+st.subheader('Error: ' + str(abs(predicted-e2)))
 
 # get error percentage
-st.subheader('Error Percentage: ' + str(abs(e1-e2)/e2*100))
+st.subheader('Error Percentage: ' + str(abs(predicted-e2)/e2*100))
 
 
