@@ -2,10 +2,10 @@ from keras.layers import Dense, Dropout, LSTM
 from keras.models import Sequential
 
 models = Sequential()
-models.add(LSTM(units= 50, activation='relu', return_sequences= True, input_shape = (X_train.shape[1], 1)))
+models.add(LSTM(units= 40, activation='relu', return_sequences= True, input_shape = (X_train.shape[1], 1)))
 models.add(Dropout(0.1))
 
-models.add(LSTM(units= 50, activation='relu', return_sequences= True, input_shape = (X_train.shape[1], 1)))
+models.add(LSTM(units= 50, activation='relu', return_sequences= True))
 models.add(Dropout(0.2))
 
 models.add(LSTM(units= 60, activation='relu', return_sequences= True))
