@@ -3,6 +3,9 @@ from keras.models import Sequential
 
 models = Sequential()
 models.add(LSTM(units= 50, activation='relu', return_sequences= True, input_shape = (X_train.shape[1], 1)))
+models.add(Dropout(0.1))
+
+models.add(LSTM(units= 50, activation='relu', return_sequences= True, input_shape = (X_train.shape[1], 1)))
 models.add(Dropout(0.2))
 
 models.add(LSTM(units= 60, activation='relu', return_sequences= True))
@@ -11,8 +14,20 @@ models.add(Dropout(0.3))
 models.add(LSTM(units= 80, activation='relu', return_sequences= True))
 models.add(Dropout(0.4))
 
-models.add(LSTM(units= 120, activation='relu', return_sequences= True))
+models.add(LSTM(units= 90, activation='relu', return_sequences= True))
 models.add(Dropout(0.5))
+
+models.add(LSTM(units= 100, activation='relu', return_sequences= True))
+models.add(Dropout(0.6))
+
+models.add(LSTM(units= 110, activation='relu', return_sequences= True))
+models.add(Dropout(0.7))
+
+models.add(LSTM(units= 120, activation='relu', return_sequences= True))
+models.add(Dropout(0.8))
+
+models.add(LSTM(units= 130, activation='relu', return_sequences= True))
+models.add(Dropout(0.9))
 
 models.add(Dense(units=1))
 
