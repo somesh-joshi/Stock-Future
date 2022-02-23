@@ -90,11 +90,6 @@ st.pyplot(fig)
 
 # get prediction
 st.subheader('Prediction: ' + str(e1))
-# get predict flow up or down
-if e1 > e2:
-    st.subheader('Prediction Stream: Up📈📈📈')
-else:
-    st.subheader('Prediction Stream: Down📉📉📉')
 
 # get original price
 st.subheader('Original Price: ' + str(e2))
