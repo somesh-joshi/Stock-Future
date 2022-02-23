@@ -17,7 +17,7 @@ end = today
 st.title('Stock Price Prediction')
 
 # get stock symbol from user
-user_input = st.text_input("Enter The Stock Symbol", 'TATAMOTORS.NS')
+user_input = st.text_input("Enter The Stock Symbol", 'TATAPOWER.NS')
 
 end = st.text_input("Enter The Date", end)
 # convart end date to datetime
