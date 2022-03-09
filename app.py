@@ -89,6 +89,14 @@ fig = plt.figure(figsize=(12,6))
 plt.plot(ma_predicted)
 st.pyplot(fig)
 
+# Table
+table_data_original = data_testing.Close[-6:]
+table_data_predicted = flat_predicted[-6:]
+table_data_original = table_data_original[:5]
+table_data_predicted = table_data_predicted[:5]
+master_table = pd.DataFrame({'Original Price': table_data_original, 'Predicted Price': table_data_predicted, 'Error Percentage': abs((table_data_predicted-table_data_original)/table_data_original)*100})
+st.table(master_table) 
+
 
 # get prediction
 st.subheader('Prediction: ' + str(e1))
@@ -99,8 +107,4 @@ st.subheader('Original Price: ' + str(e2))
 # get error percentage
 st.subheader('Error Percentage: ' + str(abs((e1-e2)/e2)*100))
 
-# Table
-table_data_original = data_testing.Close[-7:]
-table_data_predicted = ma_predicted[-7:]
-master_table = pd.DataFrame({'Original Price': table_data_original, 'Predicted Price': table_data_predicted, 'Error Percentage': abs((table_data_predicted-table_data_original)/table_data_original)*100})
-st.table(master_table)    
+   
