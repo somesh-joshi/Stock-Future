@@ -1,8 +1,5 @@
 # Import libraries
-from audioop import reverse
-from doctest import master
 from statistics import mean
-from tkinter import Menu
 from keras import models
 import numpy as np
 import pandas as pd
@@ -10,9 +7,7 @@ import matplotlib.pyplot as plt
 import pandas_datareader as data
 import streamlit as st
 from datetime import date, timedelta 
-import yfinance as yf
-
-from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import MinMaxScaler
 
 today = date.today()
 start = today - pd.DateOffset(years=20)
@@ -22,7 +17,7 @@ end = today
 st.title('Stock Price Prediction')
 
 # get stock symbol from user
-user_input = st.text_input("Enter The Stock Symbol", 'TATAMOTORS.NS')
+user_input = st.text_input("Enter The Stock Symbol", 'SBIN.NS')
 
 end = st.text_input("Enter The Date", end)
 # convart end date to datetime
@@ -46,7 +41,6 @@ st.pyplot(fig)
 
 data_testing = pd.DataFrame(df['Close'])
 
-from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler(feature_range=(0,1))
 
 X_train = []
@@ -104,15 +98,14 @@ e2 = table_data_original[4]
 e3 = mean(table_data_predicted)
 e4 = mean(table_data_original)
 
-st.header('Daily')
 # get prediction
-st.subheader('daily Prediction: ' + str(e1))
+st.text('Daily Prediction: ' + str(e1))
 
 # get original price
-st.subheader('Original Price: ' + str(e2))
+st.text('Original Price: ' + str(e2))
 
 # get error percentage
-st.subheader('Error Percentage: ' + str(abs((e1-e2)/e2)*100))
+st.text('Error Percentage: ' + str(abs((e1-e2)/e2)*100) )
 
 st.markdown("""---""")
 
